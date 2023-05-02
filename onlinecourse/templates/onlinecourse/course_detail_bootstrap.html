@@ -74,9 +74,9 @@
             <!-- <HINT> For each question choice, you may create a checkbox input like
             <input type="check" name="choice_{{choice.id}}" id="{{choice.id}}" ...>
             -->
-
+            {% if user.is_authenticated %}
             A choice submission form example
-            <form id="questionform" action="point to a submit view" method="post">
+            <form id="questionform" action="{% url 'onlinecourse:submit' %}" method="post">
                 {% for question in course.question_set.all %}
                         <div class="card mt-1">
                             <div class="card-header"><h5>{{ question.question}}</h5></div>
@@ -97,6 +97,19 @@
                    <input class="btn btn-success btn-block" type="submit" value="Submit">
                    {% endfor %}
             </form>
+            {% else %}
+            <li>
+                <form class="form-inline" action="{% url 'onlinecourse:login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Username" name="username" >
+                        <input type="password" class="form-control" placeholder="Username" name="psw" >
+                        <button class="btn btn-primary" type="submit">Login</button>
+                        <a class="btn btn-link" href="{% url 'onlinecourse:registration' %}">Sign Up</a>
+                    </div>
+                </form>
+            </li>
+            {% endif %}
 
             <!--Check here to see more details Bootstrap checkbox
              https://www.w3schools.com/bootstrap4/bootstrap_forms_inputs.asp-->
